@@ -271,10 +271,16 @@ else
 	@echo "Sample is ready - all dependencies have been met"
 endif
 
-test_BytomPoW.o:byte_order.c sha3.c test_BytomPoW.cpp
+byte_order.o:byte_order.c
+	$(EXEC) $(NVCC) $(INCLUDES) $(ALL_CCFLAGS) $(GENCODE_FLAGS) -o $@ -c $<
+    
+sha3.o:sha3.c
 	$(EXEC) $(NVCC) $(INCLUDES) $(ALL_CCFLAGS) $(GENCODE_FLAGS) -o $@ -c $<
 
-test_BytomPoW: test_BytomPoW.o
+test_BytomPoW.o:test_BytomPoW.cpp
+	$(EXEC) $(NVCC) $(INCLUDES) $(ALL_CCFLAGS) $(GENCODE_FLAGS) -o $@ -c $<
+
+test_BytomPoW: byte_order.o sha3.o test_BytomPoW.o
 	$(EXEC) $(NVCC) $(ALL_LDFLAGS) $(GENCODE_FLAGS) -o $@ $+ $(LIBRARIES)
 	$(EXEC) mkdir -p ../../bin/$(TARGET_ARCH)/$(TARGET_OS)/$(BUILD_TYPE)
 	$(EXEC) cp $@ ../../bin/$(TARGET_ARCH)/$(TARGET_OS)/$(BUILD_TYPE)
@@ -283,7 +289,7 @@ run: build
 	$(EXEC) ./test_BytomPoW
 
 clean:
-	rm -f test_BytomPoW test_BytomPoW.o
+	rm -f test_BytomPoW test_BytomPoW.o sha3.o byte_order.o
 	rm -rf ../../bin/$(TARGET_ARCH)/$(TARGET_OS)/$(BUILD_TYPE)/test_BytomPoW
 
 clobber: clean
