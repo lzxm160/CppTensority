@@ -47,19 +47,8 @@
 // in Proc. 2008 ACM/IEEE Conf. on Supercomputing (SC '08),
 // Piscataway, NJ: IEEE Press, 2008, pp. Art. 31:1-11.
 //
-#ifndef matrixmulcublas_H
-#define matrixmulcublas_H
-// Utilities and system includes
-#include <assert.h>
-#include <helper_string.h>  // helper for shared functions common to CUDA Samples
 
-// CUDA runtime
-#include <cuda_runtime.h>
-#include <cublas_v2.h>
-
-// CUDA and CUBLAS functions
-#include <helper_functions.h>
-#include <helper_cuda.h>
+#include "matrixMulCUBLAS.h"
 
 #ifndef min
 #define min(a,b) ((a < b) ? a : b)
@@ -283,7 +272,7 @@ int matrixMultiply(int argc, char **argv, int devID, sMatrixSize &matrix_size,in
         // checkCudaErrors(cublasGemmEx(handle, CUBLAS_OP_N, CUBLAS_OP_N, matrix_size.uiWB, matrix_size.uiHA, matrix_size.uiWA, &alpha, \
         // d_B, matrix_size.uiWB, d_A, matrix_size.uiWA, &beta, d_C, matrix_size.uiWB));
 // cublasStatus_t cublasDgemm(cublasHandle_t handle,cublasOperation_t transa, cublasOperation_t transb,int m, int n, int k,const double *alpha,const double *A, int lda,const double *B, int ldb,const double *beta,double *C, int ldc)
-        checkCudaErrors(cublasDgemm(handle, CUBLAS_OP_N, CUBLAS_OP_N, matrix_size.uiWB, matrix_size.uiHA, matrix_size.uiWA, &alpha, \
+checkCudaErrors(cublasDgemm(handle, CUBLAS_OP_N, CUBLAS_OP_N, matrix_size.uiWB, matrix_size.uiHA, matrix_size.uiWA, &alpha, \
         d_A, matrix_size.uiWA, d_B, matrix_size.uiWB, &beta, d_C, matrix_size.uiWB));
         // Allocate CUDA events that we'll use for timing
         checkCudaErrors(cudaEventCreate(&start));
@@ -387,4 +376,3 @@ int bytomcall(int num, char **argu,int8_t aaaa[][256],int8_t bbbb[][256])
 
     return matrix_result;
 }
-#endif

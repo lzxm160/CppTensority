@@ -4,7 +4,7 @@
 #include <time.h>
 #include <iostream>
 #include <algorithm>
-
+#include "matrixMulCUBLAS.h"
 const int TEST_NUM = 5;
 
 BytomMatList* matList_int8;
