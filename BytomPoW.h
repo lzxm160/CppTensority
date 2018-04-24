@@ -10,7 +10,7 @@ extern"C" {
 #include <assert.h>
 #include <vector>
 #include <stdint.h>
-
+#include "matrixMulCUBLAS.h"
 #define FNV(v1,v2) int32_t( ((v1)*FNV_PRIME) ^ (v2) )
 const int FNV_PRIME = 0x01000193;
 
@@ -66,7 +66,7 @@ struct Mat256x256i8 {
         copyFrom_helper(ltcMem, 1);
     }
 
-    void mul(const Mat256x256i8& a, const Mat256x256i8& b) {
+    void mulcpu(const Mat256x256i8& a, const Mat256x256i8& b) {
         double *ma = (double *)calloc(256*256, sizeof(double));
         double *mb = (double *)calloc(256*256, sizeof(double));
         double *mc = (double *)calloc(256*256, sizeof(double));
@@ -91,7 +91,9 @@ struct Mat256x256i8 {
         free(mb);
         free(mc);
     }
-
+    void mul(const Mat256x256i8& a, const Mat256x256i8& b) {
+        bytomcall(1,NULL,a.d,b.d);
+    }
     void add(Mat256x256i8& a, Mat256x256i8& b) {
         for(int i=0; i<256; i++) {
             for(int j=0; j<256; j++) {
