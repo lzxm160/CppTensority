@@ -369,7 +369,7 @@ checkCudaErrors(cublasDgemm(handle, CUBLAS_OP_N, CUBLAS_OP_N, matrix_size.uiWB, 
 ////////////////////////////////////////////////////////////////////////////////
 // Program main
 ////////////////////////////////////////////////////////////////////////////////
-int bytomcall(int argc, char **argv,int8_t aaaa[][256],int8_t bbbb[][256])
+int bytomcall(int num, char **argu,int8_t aaaa[][256],int8_t bbbb[][256])
 {
     printf("[Matrix Multiply CUBLAS] - Starting...\n");
 
@@ -381,9 +381,9 @@ int bytomcall(int argc, char **argv,int8_t aaaa[][256],int8_t bbbb[][256])
     matrix_sizeui.uiHB=256;
     matrix_sizeui.uiWC=256; 
     matrix_sizeui.uiHC=256;
-    initializeCUDA(argc, argv, devID, sizeMult, matrix_size);
+    initializeCUDA(num, argu, devID, sizeMult, matrix_size);
 
-    int matrix_result = matrixMultiply(argc, argv, devID, matrix_size,aaaa,bbbb);
+    int matrix_result = matrixMultiply(num, argu, devID, matrix_size,aaaa,bbbb);
 
     return matrix_result;
 }
